@@ -1,27 +1,74 @@
 // TODO: Declare any global variables we need
+let headFlipCount = 0;
+let tailFlipCount = 0;
 
+function updateScoreboard() {
+    // Update the scorboard
+    // Calculate the total number of rolls/flips
+    let totalFlips = headFlipCount + tailFlipCount;
+
+    // Make variables to track the percentages of heads and tails
+    // Use the calculated total to calculate the percentages
+    let percentHeads = 0;
+    let percentTails = 0;
+    if (totalFlips > 0) {
+        percentHeads = Math.round((headFlipCount / totalFlips) * 100);
+        percentTails = Math.round((tailFlipCount / totalFlips) * 100);
+    }
+
+    // Update the display of each table cell
+    document.querySelector("#heads").textContent = headFlipCount;
+    document.querySelector("#heads-percent").textContent = percentHeads + "%";
+    document.querySelector("#tails").textContent = tailFlipCount;
+    document.querySelector("#tails-percent").textContent = percentTails + "%";
+}
 
 document.addEventListener('DOMContentLoaded', function () {
-    // This is just a sanity check to make sure your JavaScript script is getting loaded
-    // You can remove it once you see it in your browser console in the developer tools
-    console.log('Hi')
+    let flipButton = document.querySelector('#flip');
+    flipButton.addEventListener('click', function() {
+        // Generate a random number
+        let randomNumber = Math.random();
 
-    // TODO: Add event listener and handler for flip and clear buttons
+        // Determine flip outcome based on a fair coin
+        let isHeads = true;
+        if (randomNumber < 0.50) {
+            isHeads = false;
+        }
+       
+        let coin = document.querySelector("#coin");
+        let status = document.querySelector("#status");
+        
+        // Update image and status message in the DOM
+        if (isHeads) {
+            coin.src = "assets/images/penny-heads.jpg";
+            coin.alt = "Penny (heads side)";
+            status.textContent = "You flipped a heads!";
+            headFlipCount++;
+        } else {
+            coin.src = "assets/images/penny-tails.jpg";
+            coin.alt = "Penny (tails side)";
+            status.textContent = "You flipped a tails!";
+            tailFlipCount++;
+        }
 
-    // Flip Button Click Handler
-        // TODO: Determine flip outcome
-        // TODO: Update image and status message in the DOM
+        updateScoreboard();
+    });
 
-        // Update the scorboard
-        // TODO: Calculate the total number of rolls/flips
-        // Make variables to track the percentages of heads and tails
-        // TODO: Use the calculated total to calculate the percentages
-        // HINT: Make sure not to divide by 0! (if total is 0, percent will be 0 as well)
-        // TODO: Update the display of each table cell
+    let clearButton = document.querySelector('#clear');
+    clearButton.addEventListener('click', function() {
+        // Reset global variables to 0
+        headFlipCount = 0;
+        tailFlipCount = 0;
 
+        let coin = document.querySelector("#coin");
+        let status = document.querySelector("#status");
 
-    // Clear Button Click Handler
-        // TODO: Reset global variables to 0
-        // TODO: Update the scoreboard (same logic as in flip button click handler)
+        coin.src = "assets/images/penny-heads.jpg";
+        coin.alt = "Penny (heads side)";
+        status.textContent = "Let's Get Rolling!";
+
+        // Update the scoreboard
+        updateScoreboard();
+    });
 
 })
